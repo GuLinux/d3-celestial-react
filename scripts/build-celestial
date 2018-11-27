@@ -44,4 +44,6 @@ cat >>"$celestialjs" <<EOF
 return Celestial;
 }
 EOF
+cp "$celestialjs" "$celestialjs.orig"
+[ -r "$project_rootdir/celestial.diff" ] && patch -p0 < "$project_rootdir/celestial.diff"
 
