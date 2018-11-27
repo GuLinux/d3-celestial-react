@@ -1,0 +1,47 @@
+#!/bin/bash
+project_rootdir="$( cd "$( dirname "$0")/.."; pwd)"
+celestial_dir="$project_rootdir/node_modules/d3-celestial"
+libs_dir="$project_rootdir/libs"
+assets_dir="$project_rootdir/assets"
+
+echo " * Copying resources to $assets_dir" >&2
+cp -av "$celestial_dir/data/"* "$assets_dir/"
+cp -av "$celestial_dir/celestial.css" "$assets_dir"
+
+echo " * Copying libraries to $libs_dir" >&2
+cp -av "$celestial_dir/lib/"* "$libs_dir/"
+
+celestial_sources=(
+    './src/celestial.js'
+    './src/projection.js'
+    './src/transform.js'
+    './src/horizontal.js'
+    './src/add.js'
+    './src/get.js'
+    './src/config.js'
+    './src/canvas.js'
+    './src/util.js'
+    './src/form.js'
+    './src/location.js'
+    './src/kepler.js'
+    './src/moon.js'
+    './src/datetimepicker.js'
+    './lib/d3.geo.zoom.js'
+)
+
+celestialjs="$libs_dir/celestial.js"
+echo " * Building $celestialjs" >&2
+
+cat >"$celestialjs" <<EOF
+export const createCelestial = function(d3) {
+EOF
+
+for s in ${celestial_sources[@]}; do
+    cat "$celestial_dir/$s" >> "$celestialjs"
+done
+
+cat >>"$celestialjs" <<EOF
+return Celestial;
+}
+EOF
+

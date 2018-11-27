@@ -1,0 +1,32 @@
+{
+  "name": "d3-celestial-react",
+  "version": "0.0.1",
+  "description": "React wrapper around d3-celestial",
+  "main": "index.js",
+  "scripts": {
+    "build:celestial": "./scripts/build-celestial"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuLinux/d3-celestial-react.git"
+  },
+  "keywords": [
+    "Celestial",
+    "Sky",
+    "Map",
+    "Stars",
+    "Star",
+    "chart"
+  ],
+  "author": "Marco Gulino <marco@gulinux.net>",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/GuLinux/d3-celestial-react/issues"
+  },
+  "homepage": "https://github.com/GuLinux/d3-celestial-react#readme",
+  "dependencies": {
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "d3-celestial": "ofrohn/d3-celestial"
+  }
+}
