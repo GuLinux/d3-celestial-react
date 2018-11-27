@@ -7,7 +7,7 @@
     "build:celestial": "./scripts/build-celestial",
     "build": "npm run build:dev && npm run build:prod",
     "build:dev": "npm run build:celestial && webpack --mode=development -o index.dev.js",
-    "build:prod": "npm run build:celestial && webpack --mode=development -o index.dev.js"
+    "build:prod": "npm run build:celestial && webpack --mode=production -o index.js"
   },
   "repository": {
     "type": "git",
