@@ -92,6 +92,7 @@
   \**********************************/
 /*! exports provided: Celestial */
 /*! all exports used */
+/*! ModuleConcatenation bailout: Cannot concat with external "lodash" (<- Module is not an ECMAScript module) */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4554,6 +4555,9 @@ var createCelestial = function createCelestial(d3) {
 
   return Celestial;
 };
+// EXTERNAL MODULE: external "lodash"
+var external_lodash_ = __webpack_require__("lodash");
+
 // CONCATENATED MODULE: ./Celestial.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Celestial", function() { return Celestial_Celestial; });
 function Celestial_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Celestial_typeof = function _typeof(obj) { return typeof obj; }; } else { Celestial_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Celestial_typeof(obj); }
@@ -4582,6 +4586,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 __webpack_require__(/*! ./libs/d3.geo.projection.js */ "./libs/d3.geo.projection.js");
 
 var hour2CelestialDegree = function hour2CelestialDegree(ra) {
@@ -4590,7 +4595,7 @@ var hour2CelestialDegree = function hour2CelestialDegree(ra) {
 
 var sanitize = function sanitize(config) {
   return _objectSpread({}, config, {
-    center: config.center && [hour2CelestialDegree(config.center[0]), config.center[1]]
+    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1]]
   });
 };
 
@@ -4640,7 +4645,11 @@ function (_React$Component) {
       _this.updateConfigTimer = setTimeout(function () {
         _this.updateConfigTimer = null;
 
-        _this.celestial.reload(nextConfig);
+        _this.celestial.apply(nextConfig);
+
+        if (Object(external_lodash_["get"])(prevConfig, 'stars.data') != Object(external_lodash_["get"])(nextConfig, 'stars.data') || Object(external_lodash_["get"])(prevConfig, 'dsos.data') != Object(external_lodash_["get"])(nextConfig, 'dsos.data')) {
+          _this.celestial.reload(nextConfig);
+        }
       }, 1000);
     };
 
@@ -4657,12 +4666,12 @@ function (_React$Component) {
     };
 
     _this.render = function () {
-      return external_react_default.a.createElement("div", null, external_react_default.a.Children.map(_this.props.children, function (c) {
+      return external_react_default.a.createElement("div", {
+        id: "celestial-map"
+      }, external_react_default.a.Children.map(_this.props.children, function (c) {
         return external_react_default.a.cloneElement(c, {
           addFeaturesCollection: _this.addFeaturesCollection
         });
-      }), external_react_default.a.createElement("div", {
-        id: "celestial-map"
       }));
     };
 
@@ -17052,6 +17061,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;function _type
 				__WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))) : undefined;
 }();
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/*! exports used: get */
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
 
 /***/ }),
 

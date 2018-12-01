@@ -28,9 +28,10 @@
   },
   "homepage": "https://github.com/GuLinux/d3-celestial-react#readme",
   "dependencies": {
+    "d3-celestial": "ofrohn/d3-celestial",
+    "lodash": "^4.17.11",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "d3-celestial": "ofrohn/d3-celestial"
+    "react-dom": "^16.6.3"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",

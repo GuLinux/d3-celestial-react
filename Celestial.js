@@ -1,14 +1,14 @@
 import React from 'react';
 import * as d3 from './libs/d3.min';
 import { createCelestial } from './libs/celestial';
-
+import { get } from 'lodash';
 require('./libs/d3.geo.projection.js');
 
 const hour2CelestialDegree = (ra) => ra > 12 ? (ra - 24) * 15 : ra * 15;
 
 const sanitize = config => ({
     ...config,
-    center: config.center && [hour2CelestialDegree(config.center[0]), config.center[1]],
+    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1]],
 });
 
 export class Celestial extends React.Component {
@@ -38,7 +38,13 @@ export class Celestial extends React.Component {
         }
         this.updateConfigTimer = setTimeout(() => {
             this.updateConfigTimer = null;
-            this.celestial.reload(nextConfig);
+            this.celestial.apply(nextConfig);
+            if(
+                get(prevConfig, 'stars.data') != get(nextConfig, 'stars.data') ||
+                get(prevConfig, 'dsos.data') != get(nextConfig, 'dsos.data')
+            ) {
+                this.celestial.reload(nextConfig);
+            }
         }, 1000);
     }
 
@@ -51,9 +57,8 @@ export class Celestial extends React.Component {
     }
 
     render = () => (
-        <div>
+        <div id='celestial-map'>
             {React.Children.map(this.props.children, c => React.cloneElement(c, {addFeaturesCollection: this.addFeaturesCollection}))}
-            <div id='celestial-map' />
         </div>
     )
 }
