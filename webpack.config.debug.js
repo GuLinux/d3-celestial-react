@@ -3,15 +3,20 @@ var nodeExternals = require('webpack-node-externals');
 
 
 module.exports = {
-  mode: 'production',
   entry: path.resolve(__dirname, 'Celestial.js'),
   output: {
     path: path.resolve(__dirname),
-    filename: 'index.js',
+    filename: 'index.dev.js',
     library: '',
-    libraryTarget: 'commonjs'
+    libraryTarget: 'commonjs',
+    pathinfo: true,
   },
   externals: [nodeExternals()],
+  optimization: {
+    namedModules: true,
+    namedChunks: true,
+    minimize: false
+  },
   module: {
     rules: [
       {
