@@ -90,7 +90,7 @@
 /*!**********************************!*\
   !*** ./Celestial.js + 1 modules ***!
   \**********************************/
-/*! exports provided: hour2CelestialDegree, Celestial */
+/*! exports provided: Celestial */
 /*! all exports used */
 /*! ModuleConcatenation bailout: Cannot concat with external "react" (<- Module is not an ECMAScript module) */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -4555,7 +4555,6 @@ var createCelestial = function createCelestial(d3) {
   return Celestial;
 };
 // CONCATENATED MODULE: ./Celestial.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hour2CelestialDegree", function() { return hour2CelestialDegree; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Celestial", function() { return Celestial_Celestial; });
 function Celestial_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { Celestial_typeof = function _typeof(obj) { return typeof obj; }; } else { Celestial_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return Celestial_typeof(obj); }
 
