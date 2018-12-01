@@ -4632,34 +4632,28 @@ function (_React$Component) {
       return _this.celestial.zoomBy(factor);
     };
 
-    _this.updateConfig = function () {
-      return; // TODO: currently config update seems to break the map
-
-      var configUpdateSeconds = 5000;
-
-      if (new Date().getTime() > _this.containerMounted + configUpdateSeconds) {
-        _this.celestial.apply(_this.props.config);
-
-        _this.configUpdateTimer = null;
-      } else {
-        if (!_this.configUpdateTimer) {
-          _this.configUpdateTimer = setTimeout(_this.updateConfig, configUpdateSeconds + 1);
-        }
+    _this.updateConfig = function (prevConfig, nextConfig) {
+      if (_this.updateConfigTimer) {
+        clearTimeout(_this.updateConfigTimer);
       }
+
+      _this.updateConfigTimer = setTimeout(function () {
+        _this.updateConfigTimer = null;
+
+        _this.celestial.reload(nextConfig);
+      }, 1000);
     };
 
-    _this.componentDidUpdate = function (prevProps) {
+    _this.shouldComponentUpdate = function (nextProps) {
       var _this$props2 = _this.props,
           config = _this$props2.config,
           zoom = _this$props2.zoom;
 
-      if (prevProps.config !== config) {
-        _this.updateConfig();
+      if (nextProps.config != config) {
+        _this.updateConfig(config, nextProps.config);
       }
 
-      if (prevProps.zoom !== zoom) {
-        _this.zoom(zoom);
-      }
+      return false;
     };
 
     _this.render = function () {
@@ -4682,8 +4676,8 @@ function (_React$Component) {
 
 var Celestial_CelestialFeaturesCollection =
 /*#__PURE__*/
-function (_React$Component2) {
-  _inherits(CelestialFeaturesCollection, _React$Component2);
+function (_React$PureComponent) {
+  _inherits(CelestialFeaturesCollection, _React$PureComponent);
 
   function CelestialFeaturesCollection(props) {
     var _this2;
@@ -4764,12 +4758,12 @@ function (_React$Component2) {
   }
 
   return CelestialFeaturesCollection;
-}(external_react_default.a.Component);
+}(external_react_default.a.PureComponent);
 
 var CelestialComponentPoint =
 /*#__PURE__*/
-function (_React$Component3) {
-  _inherits(CelestialComponentPoint, _React$Component3);
+function (_React$Component2) {
+  _inherits(CelestialComponentPoint, _React$Component2);
 
   function CelestialComponentPoint() {
     var _getPrototypeOf2;

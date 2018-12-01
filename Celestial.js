@@ -32,27 +32,22 @@ export class Celestial extends React.Component {
 
     zoom = factor => this.celestial.zoomBy(factor);
 
-    updateConfig = () => {
-        return; // TODO: currently config update seems to break the map
-        const configUpdateSeconds = 5000;
-        if(new Date().getTime() > this.containerMounted + configUpdateSeconds) {
-            this.celestial.apply(this.props.config);
-            this.configUpdateTimer = null;
-        } else {
-            if(! this.configUpdateTimer) {
-                this.configUpdateTimer = setTimeout(this.updateConfig, configUpdateSeconds + 1);
-            }
+    updateConfig = (prevConfig, nextConfig) => {
+        if(this.updateConfigTimer) {
+            clearTimeout(this.updateConfigTimer);
         }
+        this.updateConfigTimer = setTimeout(() => {
+            this.updateConfigTimer = null;
+            this.celestial.reload(nextConfig);
+        }, 1000);
     }
 
-    componentDidUpdate = prevProps => {
+    shouldComponentUpdate= (nextProps) => {
         const { config, zoom } = this.props;
-        if(prevProps.config !== config) {
-            this.updateConfig();
+        if(nextProps.config != config) {
+            this.updateConfig(config, nextProps.config);
         }
-        if(prevProps.zoom !== zoom) {
-            this.zoom(zoom);
-        }
+        return false;
     }
 
     render = () => (
@@ -64,7 +59,7 @@ export class Celestial extends React.Component {
 }
 
 
-class CelestialFeaturesCollection extends React.Component {
+class CelestialFeaturesCollection extends React.PureComponent {
     constructor(props) {
         super(props);
         this.features = [];
