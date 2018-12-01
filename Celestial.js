@@ -4,7 +4,12 @@ import { createCelestial } from './libs/celestial';
 
 require('./libs/d3.geo.projection.js');
 
-export const hour2CelestialDegree = (ra) => ra > 12 ? (ra - 24) * 15 : ra * 15;
+const hour2CelestialDegree = (ra) => ra > 12 ? (ra - 24) * 15 : ra * 15;
+
+const sanitize = config => ({
+    ...config,
+    center: config.center && [hour2CelestialDegree(config.center[0]), config.center[1]],
+});
 
 export class Celestial extends React.Component {
     constructor(props) {
@@ -19,7 +24,7 @@ export class Celestial extends React.Component {
         this.containerMounted = new Date().getTime();
         this.featuresCollections.forEach(fc => fc(this.celestial));
         const { config, zoom } = this.props;
-        this.celestial.display(config);
+        this.celestial.display(sanitize(config));
         if(zoom > 0) {
             this.zoom(zoom);
         }

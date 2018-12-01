@@ -4575,6 +4575,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -4584,6 +4588,13 @@ __webpack_require__(/*! ./libs/d3.geo.projection.js */ "./libs/d3.geo.projection
 var hour2CelestialDegree = function hour2CelestialDegree(ra) {
   return ra > 12 ? (ra - 24) * 15 : ra * 15;
 };
+
+var sanitize = function sanitize(config) {
+  return _objectSpread({}, config, {
+    center: config.center && [hour2CelestialDegree(config.center[0]), config.center[1]]
+  });
+};
+
 var Celestial_Celestial =
 /*#__PURE__*/
 function (_React$Component) {
@@ -4611,7 +4622,7 @@ function (_React$Component) {
           config = _this$props.config,
           zoom = _this$props.zoom;
 
-      _this.celestial.display(config);
+      _this.celestial.display(sanitize(config));
 
       if (zoom > 0) {
         _this.zoom(zoom);
