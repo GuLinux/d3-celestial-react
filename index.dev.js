@@ -1196,8 +1196,8 @@ var createCelestial = function createCelestial(d3) {
     //  with size,shape,color: "prop=val:result;.." || function(prop) { .. return res; } 
 
     if (!has(dat, "type")) return console.log("Missing type");
-    if ((dat.type === "dso" || dat.type === "json") && !has(dat, "file") && !has(dat, "callback")) return console.log("Can't add data file", dat);
-    if ((dat.type === "line" || dat.type === "raw") && !has(dat, "callback")) return console.log("Can't add line", dat);
+    if ((dat.type === "dso" || dat.type === "json") && (!has(dat, "file") || !has(dat, "callback"))) return console.log("Can't add data file");
+    if ((dat.type === "line" || dat.type === "raw") && !has(dat, "callback")) return console.log("Can't add line");
     if (has(dat, "file")) res.file = dat.file;
     res.type = dat.type;
     if (has(dat, "callback")) res.callback = dat.callback;
@@ -4595,7 +4595,7 @@ var hour2CelestialDegree = function hour2CelestialDegree(ra) {
 
 var sanitize = function sanitize(config) {
   return _objectSpread({}, config, {
-    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1]]
+    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1], config.center[2] || 0]
   });
 };
 
@@ -4616,21 +4616,23 @@ function (_React$Component) {
     };
 
     _this.componentDidMount = function () {
-      _this.containerMounted = new Date().getTime();
+      return setTimeout(function () {
+        _this.containerMounted = new Date().getTime();
 
-      _this.featuresCollections.forEach(function (fc) {
-        return fc(_this.celestial);
-      });
+        _this.featuresCollections.forEach(function (fc) {
+          return fc(_this.celestial);
+        });
 
-      var _this$props = _this.props,
-          config = _this$props.config,
-          zoom = _this$props.zoom;
+        var _this$props = _this.props,
+            config = _this$props.config,
+            zoom = _this$props.zoom;
 
-      _this.celestial.display(sanitize(config));
+        _this.celestial.display(sanitize(config));
 
-      if (zoom > 0) {
-        _this.zoom(zoom);
-      }
+        if (zoom > 0) {
+          _this.zoom(zoom);
+        }
+      }, 500);
     };
 
     _this.zoom = function (factor) {
@@ -4645,10 +4647,10 @@ function (_React$Component) {
       _this.updateConfigTimer = setTimeout(function () {
         _this.updateConfigTimer = null;
 
-        _this.celestial.apply(nextConfig);
+        _this.celestial.apply(sanitize(nextConfig));
 
         if (Object(external_lodash_["get"])(prevConfig, 'stars.data') != Object(external_lodash_["get"])(nextConfig, 'stars.data') || Object(external_lodash_["get"])(prevConfig, 'dsos.data') != Object(external_lodash_["get"])(nextConfig, 'dsos.data')) {
-          _this.celestial.reload(nextConfig);
+          _this.celestial.reload(sanitize(nextConfig));
         }
       }, 1000);
     };
@@ -4705,7 +4707,7 @@ function (_React$PureComponent) {
 
     _this2.addToCelestial = function (celestial) {
       return celestial.add({
-        type: 'json',
+        type: 'raw',
         callback: function callback() {
           return _this2.celCallback(celestial);
         },

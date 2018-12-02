@@ -8,7 +8,7 @@ const hour2CelestialDegree = (ra) => ra > 12 ? (ra - 24) * 15 : ra * 15;
 
 const sanitize = config => ({
     ...config,
-    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1]],
+    center: config && config.center && [hour2CelestialDegree(config.center[0]), config.center[1], config.center[2] || 0],
 });
 
 export class Celestial extends React.Component {
@@ -20,7 +20,7 @@ export class Celestial extends React.Component {
 
     addFeaturesCollection = fc => this.featuresCollections.push(fc);
 
-    componentDidMount = () => {
+    componentDidMount = () => setTimeout(() => {
         this.containerMounted = new Date().getTime();
         this.featuresCollections.forEach(fc => fc(this.celestial));
         const { config, zoom } = this.props;
@@ -28,7 +28,7 @@ export class Celestial extends React.Component {
         if(zoom > 0) {
             this.zoom(zoom);
         }
-    }
+    }, 500);
 
     zoom = factor => this.celestial.zoomBy(factor);
 
@@ -38,12 +38,12 @@ export class Celestial extends React.Component {
         }
         this.updateConfigTimer = setTimeout(() => {
             this.updateConfigTimer = null;
-            this.celestial.apply(nextConfig);
+            this.celestial.apply(sanitize(nextConfig));
             if(
                 get(prevConfig, 'stars.data') != get(nextConfig, 'stars.data') ||
                 get(prevConfig, 'dsos.data') != get(nextConfig, 'dsos.data')
             ) {
-                this.celestial.reload(nextConfig);
+                this.celestial.reload(sanitize(nextConfig));
             }
         }, 1000);
     }
@@ -77,7 +77,7 @@ class CelestialFeaturesCollection extends React.PureComponent {
     }
 
     addToCelestial = celestial => celestial.add({
-        type: 'json',
+        type: 'raw',
         callback: () => this.celCallback(celestial),
         redraw: () => this.celRedraw(celestial),
     });
