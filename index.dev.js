@@ -4635,8 +4635,12 @@ function (_React$Component) {
       }, 500);
     };
 
-    _this.zoom = function (factor) {
-      return _this.celestial.zoomBy(factor);
+    _this.zoom = function (ratio) {
+      return _this.celestial.zoomBy(ratio);
+    };
+
+    _this.zoomTo = function (level) {
+      return _this.zoom(level / _this.zoom());
     };
 
     _this.updateConfig = function (prevConfig, nextConfig) {

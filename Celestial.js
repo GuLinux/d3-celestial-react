@@ -30,7 +30,9 @@ export class Celestial extends React.Component {
         }
     }, 500);
 
-    zoom = factor => this.celestial.zoomBy(factor);
+    zoom = ratio => this.celestial.zoomBy(ratio);
+
+    zoomTo = level => this.zoom(level / this.zoom());
 
     updateConfig = (prevConfig, nextConfig) => {
         if(this.updateConfigTimer) {
